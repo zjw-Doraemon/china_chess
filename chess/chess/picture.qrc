@@ -1,0 +1,23 @@
+<RCC>
+    <qresource prefix="/">
+        <file>ChessImage/che_red.ico</file>
+        <file>ChessImage/shi.ico</file>
+        <file>ChessImage/xiang.ico</file>
+        <file>ChessImage/pao.ico</file>
+        <file>ChessImage/jiang.ico</file>
+        <file>ChessImage/ma.ico</file>
+        <file>ChessImage/BOARD.BMP</file>
+        <file>ChessImage/bing.ico</file>
+        <file>ChessImage/che.ico</file>
+        <file>ChessImage/shi_red.ico</file>
+        <file>ChessImage/xiang_red.ico</file>
+        <file>ChessImage/pao_red.ico</file>
+        <file>ChessImage/jiang_red.ico</file>
+        <file>ChessImage/ma_red.ico</file>
+        <file>ChessImage/bing_red.ico</file>
+        <file>ChessImage/board_full.png</file>
+        <file>ChessImage/back.jpg</file>
+        <file>style/ui.qss</file>
+        <file>ChessImage/welcome_back.jpg</file>
+    </qresource>
+</RCC>
