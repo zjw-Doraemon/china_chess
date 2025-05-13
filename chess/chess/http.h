@@ -20,6 +20,8 @@ private:
     QNetworkAccessManager _manager;
 signals:
     void http_register_finish(QJsonObject json);
+    void http_login_finish(QJsonObject json);
+    void http_friend_finish(QJsonObject json);
 };
 
 #endif // HTTP_H

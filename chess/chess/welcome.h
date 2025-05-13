@@ -7,6 +7,7 @@
 #include <QGraphicsView>
 #include <QVBoxLayout>
 #include "chessboard.h"
+
 namespace Ui {
 class welcome;
 }
@@ -21,13 +22,15 @@ public:
 
 private slots:
     void on_local_mode_clicked();
-
+    void web_test();
     void on_friend_mode_clicked();
 
 private:
     Ui::welcome *ui;
+
 signals:
     void show_board();
+    void switch_friend_list();
 
 };
 

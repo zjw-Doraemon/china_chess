@@ -6,7 +6,7 @@
 class ChessFactory {
 public:
     using CreateFunc = std::function<ChessBase* (Color, const QPoint&, int, chessboard*, QObject*)>;
-
+    
     // **注册棋子**
     void registerPiece(const QString& type, CreateFunc func) {
         factoryMap[type] = func;
@@ -20,7 +20,7 @@ public:
         }
         return nullptr; // 未找到对应棋子
     }
-
+    
     // **单例模式，确保全局只有一个工厂**
     static ChessFactory& instance() {
         static ChessFactory factory;

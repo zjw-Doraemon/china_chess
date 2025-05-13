@@ -43,14 +43,14 @@ void HttpConnection::handle_http()
 		
 		
 	}
-	std::cout << beast::buffers_to_string(response->body().data()) << std::endl;
+	
 	WriteResponse(std::move(response));
 }
 
 
 HttpConnection::~HttpConnection()
 {
-	std::cout << "Destruct an HTTP connection  " << std::endl;
+	//std::cout << "Destruct an HTTP connection  " << std::endl;
 }
 
 
@@ -86,6 +86,7 @@ void HttpConnection::WriteResponse(std::unique_ptr<http::response<http::dynamic_
 	http::async_write(_socket, *resp_ptr, [self, response = std::move(_response)](beast::error_code ec,
 		std::size_t bytes_transferred) {
 			self->_socket.shutdown(tcp::socket::shutdown_send, ec);
-			std::cout << "reply success !" << std::endl;
+			
+			std::cout << "reply success !  " << "reply error_code is:"<< beast::buffers_to_string(response->body().data()) << std::endl;
 		});
 }

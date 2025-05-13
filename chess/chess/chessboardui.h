@@ -17,19 +17,23 @@ class ChessBoardUi :  public QGraphicsScene
 {
     Q_OBJECT
 public:
+    void clear_piece();
     void init_view_red_or_black(QString); // 初始化棋盘
-    void  centerItemInScene(QGraphicsItem* item, QGraphicsScene* scene);  // 将item居中
-
     ChessBoardUi(QObject * parent = nullptr,QString view = "red");
+    
+private:
     Chesspieces* get_pieces_from_id(int);
     QPoint point_grid(QPoint);  // 坐标棋盘规范化
     /*初始化后端棋局   这里无奈的很，以后可能要重新设计因为，
     由于connect操作在对象初始化之后，所以只能在外部初始化后端棋局了*/
 
+    
+    void  centerItemInScene(QGraphicsItem* item, QGraphicsScene* scene);  // 将item居中
+
     void select_piece(int id);
     void cancel_select(int id);
     void show_checkmate_text(); // 绝杀动画
-    void clear_piece();
+    
     
 
 private:
@@ -39,7 +43,8 @@ private:
     Chesspieces* to_pieces = nullptr; // 可能被吃的棋子的指针
     ChessBoardItem* _chessboard; // 棋盘类
     std::map<int, Chesspieces*> _chess_pieces; //棋子集合
-    QString board_view;
+    bool is_seal = false;
+    
 
 
 public slots:
@@ -50,6 +55,7 @@ public slots:
 public slots:
     
     void can_move(int,QPoint,bool); // 是否可以移动
+    void web_move(int, QPoint, bool); // 服务器上对方发过来的走子信息，因为不是本地走的会没有很多，本地ui棋盘类的棋子信息所以必须要，重新写一个函数。
     
 signals:
     void PieceMove(int id, QPoint start, QPoint end);
@@ -81,8 +87,10 @@ public:
 
 private:
     int board_spacing ;
+    uint16_t _long = 540;
+    uint16_t _wide = 480;
 signals:
-    void position_board(QPoint);
+    void position_board(QPoint); // 发送点击棋盘的位置
 
 };
 

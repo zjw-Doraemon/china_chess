@@ -5,6 +5,7 @@
 #include <QGraphicsDropShadowEffect>
 #include <QPropertyAnimation>
 #include <QTimer>
+#include "new_chess_board_ui.h"
 // scene 场景容器类
 void ChessBoardUi::init_view_red_or_black(QString view)
 {
@@ -143,7 +144,7 @@ void ChessBoardUi:: centerItemInScene(QGraphicsItem* item, QGraphicsScene* scene
 
 ChessBoardUi::ChessBoardUi(QObject *parent,QString view)
     : QGraphicsScene(parent)
-    ,board_view(view)
+    
     ,_chessboard(new ChessBoardItem() )
 {
     //设置大小
@@ -154,13 +155,16 @@ ChessBoardUi::ChessBoardUi(QObject *parent,QString view)
     // 添加棋盘 居中棋盘
     addItem(_chessboard);
     centerItemInScene(_chessboard,this);
-    // 初始化棋盘
-    //init_view_red_or_black(board_view);
+   
     // 设置背景
     setBackgroundBrush(QPixmap(":/ChessImage/back.jpg"));
 
     //连接棋盘点击信号
     connect(_chessboard, &ChessBoardItem::position_board, this, [this](QPoint target_pos) {
+        // 如果封印取消相应
+        if (is_seal) {
+            return;
+        }
         QPoint pos = point_grid(target_pos); // 棋子坐标规范化
         if (selected_pieces != -1) {
             auto tmp = cur_pieces;
@@ -182,10 +186,13 @@ Chesspieces *ChessBoardUi::get_pieces_from_id(int id)
 {
     return _chess_pieces[id];
 }
-
+// 点击棋子
 void ChessBoardUi::update_newpiece_and_move(int id)
 {
-    
+    // 如果封印取消相应
+    if (is_seal) {
+        return;
+    }
     
     if (selected_pieces == -1) {
         select_piece(id);
@@ -330,8 +337,35 @@ void ChessBoardUi::judge_win()
 {
     show_checkmate_text(); //动画播放
     
-    
 
+}
+
+void ChessBoardUi::web_move(int id, QPoint target , bool move)
+{
+    if(move == false) {
+        return;
+    }
+    // 吃子
+    if (to_pieces != nullptr) {
+        int board_spa = _chessboard->get_board_spacing(); // 棋盘间距
+        QPoint end = point_grid(QPoint(target.x() * board_spa, target.y() * board_spa));
+
+        to_pieces->setVisible(false);
+        auto tmp = cur_pieces;
+        tmp->playMoveAnimation(end);
+        cancel_select(id);
+        to_pieces = nullptr;
+    }
+    // 点击棋盘
+    else {
+        int board_spa = _chessboard->get_board_spacing(); // 棋盘间距
+        QPoint end = point_grid(QPoint(target.x() * board_spa, target.y() * board_spa));
+
+        auto tmp = cur_pieces;
+        tmp->playMoveAnimation(end);
+        cancel_select(id);
+
+    }
 }
 
 void ChessBoardUi::can_move(int id,QPoint target,bool move) 
@@ -417,11 +451,8 @@ void ChessBoardItem::add_pieces(Chesspieces* piece, QPoint target_pos)
 
 QRectF ChessBoardItem::boundingRect() const {
 
-    return QRectF(0, 0, 480, 540); // 棋盘大小
+    return QRectF(0, 0, _wide, _long); // 棋盘大小
 }
-
-
-
 
 
 
@@ -550,8 +581,8 @@ void Chesspieces::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
 
     //qDebug() << "棋子界面被点击！";
-    is_selected = !is_selected;
-    this->setProperty("is_selected",is_selected);
+    
+    //this->setProperty("is_selected",is_selected);
     emit click_select_sent_id(id,is_selected);
 
 }
@@ -678,9 +709,6 @@ AutoResizeView::AutoResizeView(QWidget *parent):_scene(new ChessBoardUi(this))
     //setDragMode(QGraphicsView::NoDrag); // 禁用拖拽
     //setBackgroundBrush(QColor(173, 216, 230));
     
-
-
-
 }
 
 void AutoResizeView::clear_pieces()
@@ -692,6 +720,7 @@ ChessBoardUi *AutoResizeView::get_scene()
 {
     return _scene;
 }
+
 
 void AutoResizeView::resizeEvent(QResizeEvent *event) {
     QGraphicsView::resizeEvent(event);

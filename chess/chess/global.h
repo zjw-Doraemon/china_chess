@@ -11,7 +11,7 @@ enum class SelectState { SELECTED, UNSELECTED };
 // 定义位置坐标结构体，使用 x 和 y 表示二维坐标
 struct Position { int x, y; };
 
-enum class Model {friend_model = 0,register_model = 1,logic_model = 2};
+enum class Model {friend_model = 0,register_model = 1,logic_model = 2,web_board_model = 3};
 
 //解析json 数据
 #include <QFile>

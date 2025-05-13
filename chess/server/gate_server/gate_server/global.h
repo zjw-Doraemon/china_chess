@@ -28,6 +28,13 @@
 #include <chrono>
 #include <thread>
 
+
+// 时间头文件
+#include <iomanip>
+#include <ctime>
+#include <chrono>
+#include <sstream>
+#include <cstdlib>
 namespace beast = boost::beast;         // from <boost/beast.hpp>
 namespace http = beast::http;           // from <boost/beast/http.hpp>
 namespace net = boost::asio;            // from <boost/asio.hpp>
@@ -37,6 +44,7 @@ enum class ErrorCodes {
 	register_failed = 1001, // 注册错误
 	send_varify_failed = 1002, // 发送验证码错误
 	varify_faild = 1003,
+	login_faild = 1004,
 };
 
 using defer_function = std::function<void()>;
@@ -47,3 +55,5 @@ public:
 private:
 	defer_function end;  // 试试改为用unique指针持有，未来
 };
+
+std::string get_now();

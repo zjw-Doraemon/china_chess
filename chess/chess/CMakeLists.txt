@@ -20,40 +20,31 @@ set(PROJECT_SOURCES
         mainwindow.cpp
         mainwindow.h
         mainwindow.ui
+        chessbase.h chessbase.cpp
+        chessboard.h chessboard.cpp
+        chessfactory.h chessfactory.cpp
+        global.h global.cpp
+        test.h test.cpp
+        chessboardui.h chessboardui.cpp
+        welcome.h welcome.cpp welcome.ui
+        custom_widget.h custom_widget.cpp
+        board_control.h board_control.cpp board_control.ui
+        http.h http.cpp
+        register_dialog.h register_dialog.cpp register_dialog.ui
+        logindialog.h logindialog.cpp logindialog.ui
+        tcp.h tcp.cpp
+        friend_list.h friend_list.cpp friend_list.ui
+        friend_item.h friend_item.cpp friend_item.ui
+        user_data.h user_data.cpp
+        new_chess_board_ui.h new_chess_board_ui.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(chess
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
-        chessbase.h chessbase.cpp
-        chessboard.h chessboard.cpp
-        chessfactory.h chessfactory.cpp
-        progress_design.md
-
-        global.h global.cpp
-
-        test.h test.cpp
-        logic/CMakeLists.txt
         picture.qrc
-        chessboardui.h chessboardui.cpp
-
-        welcome.h welcome.cpp welcome.ui
-        custom_widget.h custom_widget.cpp
-        board_control.h board_control.cpp board_control.ui
-        http.h http.cpp
-        config.json
-        register_dialog.h register_dialog.cpp register_dialog.ui
-        logindialog.h logindialog.cpp logindialog.ui
-
-
-
-
-
-
-
-
-
+        web_board_control.h web_board_control.cpp web_board_control.ui
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET chess APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
@@ -100,9 +91,6 @@ if(QT_VERSION_MAJOR EQUAL 6)
     qt_finalize_executable(chess)
 endif()
 
-
-
-
 # 复制配置文件
 add_custom_command(
     TARGET chess POST_BUILD
@@ -112,4 +100,15 @@ add_custom_command(
     COMMENT "Updating config.json if different"
 )
 
+add_custom_command(
+    TARGET chess POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+            ${CMAKE_SOURCE_DIR}/ChessImage
+            $<TARGET_FILE_DIR:chess>/ChessImage
+    COMMENT "Updating ChessImage directory if different"
+)
 
+add_compile_options(/wd4828)
+
+# 忽略编码警告
+target_compile_options(chess PRIVATE /wd4828) 

@@ -28,24 +28,16 @@ public:
     // 设置棋子位置
     void setPosition(const QPoint& newPos);
 
-    // 获取选中状态
-    SelectState getSelectionState() const;
-
-    // 设置选中状态
-    void setSelectionState(SelectState state);
-
     // 判断棋子是否可以移动到指定位置
     virtual bool canMoveTo(const QPoint& targetPos) const = 0;
 
-    // 将棋子信息转换为字符串（用于调试或显示）
-    virtual QString toString() const;
+    
 
 protected:
     QPoint pos;
     Color color;
     PieceType type;
-    SelectState selectionState; // 选中状态
-    int id; // 唯一标识
+    int id; // 唯一标识 全局固定 从左上到右下依次增大
     chessboard* _board ;
     
 };

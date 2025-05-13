@@ -16,20 +16,22 @@ void http::post(QUrl url,QJsonObject json,Model model)
 
             reply->deleteLater();
             std::cout << reply->errorString().toStdString();
-            std::cout<< "服务器连接失败"<<std::endl;
+            std::cout<< "connect failed"<<std::endl;
             return;
         }
-        std::cout<< "服务器连接成功"<<std::endl;
+        //std::cout<< "connect success"<<std::endl;
 
         // 读取返回数据
         QByteArray responseData = reply->readAll();
+        
         QJsonDocument doc = QJsonDocument::fromJson(responseData);
         if (doc.isNull()) {
-            std::cout << "JSON 解析失败，响应数据: " << responseData.toStdString() << std::endl;
+            std::cout << "JSON parse failed" << responseData.toStdString() << std::endl;
             reply->deleteLater();
             return;
         }
-        http::handle_result(QJsonDocument::fromJson(reply->readAll().data()).object(), model);
+        //std::cout << doc.toJson().toStdString();
+        http::handle_result(doc.object(), model);
         reply->deleteLater();
     });
 
@@ -50,18 +52,26 @@ void http::get(QUrl url ,Model model)
 
             reply->deleteLater();
             std::cout << reply->errorString().toStdString() << std::endl;
-            std::cout<< "服务器连接失败"<<std::endl;
+            std::cout<< "connect failed"<<std::endl;
             return;
         }
-        std::cout<< "服务器连接成功"<<std::endl;
+        //std::cout<< "服务器连接成功"<<std::endl;
         reply->deleteLater();
     });
 }
 void http::handle_result(QJsonObject json, Model model)
 {
     if (model == Model::register_model) {
-        std::cout << json.value("error_code").toString().toStdString();
+        //std::cout << QJsonDocument(json).toJson().toStdString();
         http_register_finish(json);
+    }
+    if (model == Model::logic_model) {
+        //std::cout << QJsonDocument(json).toJson().toStdString();
+        http_login_finish(json);
+    }
+    if (model == Model::friend_model) {
+        //std::cout << QJsonDocument(json).toJson().toStdString();
+        http_friend_finish(json);
     }
 }
 http::http(){

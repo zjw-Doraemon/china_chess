@@ -72,6 +72,7 @@ bool Advisor::canMoveTo(const QPoint& target) const {
         inOwnHalf = (color == Color::RED) ? (target.y() >= 7) : (target.y() <= 2);
     }
     inOwnHalf = inOwnHalf && (target.x() >= 3 && target.x() <= 5);
+    // 走的方向
     bool isDiagonalMove = (dx == 1 && dy == 1);
     
 
@@ -201,7 +202,7 @@ bool Soldier::canMoveTo(const QPoint& target) const {
     if (isBeforeRiver) {
         return canMoveForward;
     }
-
+    
     // 过河后可以前进或左右移动
     return canMoveForward || canMoveSideways;
 }

@@ -1,8 +1,7 @@
 /* 为开始界面设置背景*/
 
 QWidget#welcome_back {
-    background-image: url(:/ChessImage/welcome_back.jpg);
-    background-size: contain; /* 保持图片比例，适应控件 */
+    border-image: url(:/ChessImage/welcome_back.jpg) 0 0 0 0 stretch stretch;
     background-repeat: no-repeat; /* 防止图片重复 */
     background-position: center; /* 将图片居中显示 */
 }

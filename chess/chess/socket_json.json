@@ -1,0 +1,19 @@
+{
+  //������
+  "error_code": "",
+  // ������ʲô
+  "action": "defult",
+  //������Ϣ ע���¼ģ��
+  "name": "",
+  "email": "",
+  "varify_code": "",
+  "pass_word": "",
+  "��": null,
+  //��������
+  "friend_name": "",
+  // tcp 专用 哪个模块的请求
+  "model": "",
+  // 添加好友的名字
+  "add_friend_name": "",
+  
+}

@@ -7,7 +7,7 @@ public:
 	bool isConnected;  // 是否连接成功，需要告知后续代码，防止崩溃
 private:
 	
-	
+	bool create_connect();
 	void beat_check();
 	sql::Connection* _sql;
 	//std::chrono::system_clock::time_point last_time = std::chrono::system_clock::now();
@@ -38,6 +38,10 @@ public:
 	friend class single_class<mysql_mgr>;
 	void initDataBase();
 	bool register_user(const std::string& name, const std::string& email, const std::string& pwd);
+	bool login(const std::string& email, const std::string& pwd);
+	bool search_friend(const std::string& name);
+	boost::json::array get_friend_list(const std::string& name);
+	std::string get_email(const std::string& name);
 private:
 	mysql_mgr();
 	mysql_pool connection_pool;
